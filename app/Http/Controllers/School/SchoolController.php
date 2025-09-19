@@ -1,72 +1,72 @@
 <?php
 
 namespace App\Http\Controllers\School;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\School; // assuming schools are stored in users table with role=school
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
     public function index()
     {
-        $schools = School::all();
-        return view('schools.index', compact('schools'));
+        $items = User::where('role', 'school')->get();
+        return view('schools.index', compact('items'))->with('role', 'schools');
     }
 
     public function create()
     {
-        return view('schools.create');
+        return view('schools.create')->with('role', 'schools');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:schools',
-            'password' => 'required|min:6'
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
         ]);
 
-        School::create([
-            'name' => $request->name,
+        User::create([
+            'name'  => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'address' => $request->address,
-            'contact' => $request->contact
+            'role'  => 'school',
+            'password' => bcrypt('password'), // default password
         ]);
 
         return redirect()->route('schools.index')->with('success', 'School created successfully.');
     }
 
-    public function show(School $school)
+    public function show($id)
     {
-        return view('schools.show', compact('school'));
+        $item = User::where('role', 'school')->findOrFail($id);
+        return view('schools.show', compact('item'))->with('role', 'schools');
     }
 
-    public function edit(School $school)
+    public function edit($id)
     {
-        return view('schools.edit', compact('school'));
+        $item = User::where('role', 'school')->findOrFail($id);
+        return view('schools.edit', compact('item'))->with('role', 'schools');
     }
 
-    public function update(Request $request, School $school)
+    public function update(Request $request, $id)
     {
+        $item = User::where('role', 'school')->findOrFail($id);
+
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:schools,email,'.$school->id,
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$item->id,
         ]);
 
-        $school->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'address' => $request->address,
-            'contact' => $request->contact
-        ]);
+        $item->update($request->only('name', 'email'));
 
         return redirect()->route('schools.index')->with('success', 'School updated successfully.');
     }
 
-    public function destroy(School $school)
+    public function destroy($id)
     {
-        $school->delete();
+        $item = User::where('role', 'school')->findOrFail($id);
+        $item->delete();
+
         return redirect()->route('schools.index')->with('success', 'School deleted successfully.');
     }
 }

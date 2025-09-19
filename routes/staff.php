@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
+use App\Http\Controllers\StaffController;
 
 use Dom\Comment;
 use Illuminate\Support\Facades\Route;
-
-
-// Staff (Teachers)
-Route::middleware(['role:Staff'])->group(function () {
+Route::group(
+    ['middleware' => ['auth'], 'prefix' => 'staff', 'as' => 'staff.'],
+    function () {
     Route::resource('attendance', AttendanceController::class);
     Route::resource('exams', ExamController::class);
 });

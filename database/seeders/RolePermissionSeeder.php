@@ -16,7 +16,7 @@ class RolePermissionSeeder extends Seeder
         // Define permissions
         $permissions = [
             'manage schools',
-            'manage teachers',
+            'manage staff',
             'manage students',
             'manage parents',
             'manage classrooms',
@@ -40,11 +40,11 @@ class RolePermissionSeeder extends Seeder
         // Roles
         $roles = [
             'Admin' => [
-                'manage schools', 'manage teachers', 'manage students', 'manage parents',
+                'manage schools', 'manage staff', 'manage students', 'manage parents',
                 'manage classrooms', 'manage subjects', 'manage attendance',
                 'manage exams', 'manage results', 'manage fees', 'manage notifications',
             ],
-            'Teacher' => [
+            'Staff' => [
                 'manage attendance', 'manage exams', 'manage results', 'teach tutoring sessions',
                 'access micro learning',
             ],
@@ -54,9 +54,7 @@ class RolePermissionSeeder extends Seeder
             'Parent' => [
                 'view results', 'manage fees',
             ],
-            'Tutor' => [
-                'teach tutoring sessions',
-            ],
+          
         ];
 
         foreach ($roles as $roleName => $rolePermissions) {
