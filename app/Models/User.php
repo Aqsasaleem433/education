@@ -18,7 +18,10 @@ class User extends Authenticatable
     // relationships
     public function school()
 {
-    return $this->belongsTo(School::class);
+
+        return $this->belongsTo(School::class);
+    
+
 }
 
 public function studentProfile()

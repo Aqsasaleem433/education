@@ -12,12 +12,12 @@ class StudentController extends Controller
     public function index()
     {
         $items = User::where('role', 'school')->get();
-        return view('schools.index', compact('items'))->with('role', 'schools');
+        return view('school.index', compact('items'))->with('role', 'school');
     }
 
     public function create()
     {
-        return view('schools.create')->with('role', 'schools');
+        return view('school.create')->with('role', 'school');
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class StudentController extends Controller
             'password' => bcrypt('password'), // default password
         ]);
 
-        return redirect()->route('schools.index')->with('success', 'School created successfully.');
+        return redirect()->route('school.index')->with('success', 'School created successfully.');
     }
 
     public function show($id)

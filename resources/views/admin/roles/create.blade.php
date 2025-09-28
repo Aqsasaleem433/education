@@ -1,5 +1,4 @@
-@extends('layout.master')
-
+@extends('admin.layout.master')
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">

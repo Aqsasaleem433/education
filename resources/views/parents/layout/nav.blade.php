@@ -19,8 +19,8 @@
                         
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
-                                <img src="" class="rounded-circle me-2" width="32" height="32">
-                                <span>Aksa</span>
+                                {{-- <img  class="rounded-circle me-2" width="32" height="32"> --}}
+                                <span>KIPS</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="#">Profile</a></li>

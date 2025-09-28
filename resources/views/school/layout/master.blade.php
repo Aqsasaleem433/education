@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  @include('layout.header')
+  @include('school.layout.header')
 <body>
     <div class="wrapper d-flex">
         <!-- Sidebar -->
-         @include('layout.sidebar')
+         @include('school.layout.sidebar')
 
         <!-- Page Content -->
         <div id="content">
             <!-- Top Navbar -->
-              @include('layout.nav')
+              @include('school.layout.nav')
 
             <!-- Main Content -->
             <div class="container-fluid p-4">
+               
                 <!-- Page Header -->
                 <div class="row mb-4">
                     <div class="col-12">
@@ -22,7 +23,7 @@
                 </div>
                 
                 <!-- Stats Cards -->
-                <div class="row mb-4">
+                {{-- <div class="row mb-4">
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card dashboard-card">
                             <div class="card-body">
@@ -90,10 +91,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 
                 <!-- Charts Row -->
-                <div class="row mb-4">
+                {{-- <div class="row mb-4">
                     <div class="col-xl-8 col-lg-7">
                         <div class="card dashboard-card">
                             <div class="card-header bg-white">
@@ -119,10 +120,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
+                </div> --}}
+                 @yield('content')
                 <!-- Recent Activity & Top Products -->
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-xl-6 col-lg-12">
                         <div class="card dashboard-card">
                             <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -226,13 +227,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
+            
         </div>
     </div>
 
 
     
-  @include('layout.footer')
+  @include('school.layout.footer')
 </body>
 </html>

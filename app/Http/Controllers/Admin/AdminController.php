@@ -3,19 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+
 class AdminController extends Controller
 {
     public function index()
     {
-        $items = User::where('role', 'school')->get();
-        return view('schools.index', compact('items'))->with('role', 'schools');
+        // Get only users with role schooladmin
+        $items = User::role('SchoolAdmin')->get();
+        return view('school.index', compact('items'));
     }
 
     public function create()
     {
-        return view('schools.create')->with('role', 'schools');
+        return view('school.create');
     }
 
     public function store(Request $request)
@@ -25,48 +29,71 @@ class AdminController extends Controller
             'email' => 'required|email|unique:users,email',
         ]);
 
-        User::create([
-            'name'  => $request->name,
-            'email' => $request->email,
-            'role'  => 'school',
-            'password' => bcrypt('password'), // default password
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make('12345678'), // default password
         ]);
 
-        return redirect()->route('schools.index')->with('success', 'School created successfully.');
+        // Make sure role exists
+        Role::firstOrCreate(['name' => 'SchoolAdmin']);
+
+        // Assign role to user
+        $user->assignRole('SchoolAdmin');
+
+        return redirect()->route('school.index')->with('success', 'School created successfully.');
     }
 
     public function show($id)
     {
-        $item = User::where('role', 'school')->findOrFail($id);
-        return view('schools.show', compact('item'))->with('role', 'schools');
+        $item = User::findOrFail($id);
+
+        if (!$item->hasRole('SchoolAdmin')) {
+            abort(403, 'Not a school admin');
+        }
+
+        return view('school.show', compact('item'));
     }
 
     public function edit($id)
     {
-        $item = User::where('role', 'school')->findOrFail($id);
-        return view('schools.edit', compact('item'))->with('role', 'schools');
+        $item = User::findOrFail($id);
+
+        if (!$item->hasRole('SchoolAdmin')) {
+            abort(403, 'Not a school admin');
+        }
+
+        return view('school.edit', compact('item'));
     }
 
     public function update(Request $request, $id)
     {
-        $item = User::where('role', 'school')->findOrFail($id);
+        $item = User::findOrFail($id);
+
+        if (!$item->hasRole('SchoolAdmin')) {
+            abort(403, 'Not a school admin');
+        }
 
         $request->validate([
             'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.$item->id,
+            'email' => 'required|email|unique:users,email,' . $item->id,
         ]);
 
         $item->update($request->only('name', 'email'));
 
-        return redirect()->route('schools.index')->with('success', 'School updated successfully.');
+        return redirect()->route('school.index')->with('success', 'School updated successfully.');
     }
 
     public function destroy($id)
     {
-        $item = User::where('role', 'school')->findOrFail($id);
+        $item = User::findOrFail($id);
+
+        if (!$item->hasRole('SchoolAdmin')) {
+            abort(403, 'Not a school admin');
+        }
+
         $item->delete();
 
-        return redirect()->route('schools.index')->with('success', 'School deleted successfully.');
+        return redirect()->route('school.index')->with('success', 'School deleted successfully.');
     }
 }
-

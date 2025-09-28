@@ -1,4 +1,4 @@
-@extends('layout.master')
+@extends('admin.layout.master')
 @section('content')
     <div class="container">
 
@@ -15,7 +15,7 @@
 
 
                     @if ($user['is_admin'] == 1)
-                        <a href="{{ route('admin.roles.index') }}">welcome page </a>
+                        <a href="{{ route('admin.roles.index') }}"> </a>
                     @else
                         <a href="{{ route('about') }}">about page </a>
                     @endif
